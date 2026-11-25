@@ -1,3 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+JBMenv/
+
+# Frontend
+node_modules/
+dist/
+.vite/
+
+# Environment variables
+.env
+
+# IDE
+.idea/
+.vscode/
+
+# Mac
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
