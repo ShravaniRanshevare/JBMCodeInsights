@@ -37,5 +37,8 @@ class CBO(ast.NodeVisitor):
         for key in self.class_coupling:
             cbo = len(self.class_coupling[key])
             totalCbo += cbo
-        return (totalCbo/len(self.class_coupling))
+        if totalCbo:
+            return (totalCbo/len(self.class_coupling))
+        else:
+            return 0
 

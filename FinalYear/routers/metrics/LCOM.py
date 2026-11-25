@@ -23,7 +23,8 @@ class LCOM(ast.NodeVisitor):
     
     def visit_FunctionDef(self,node):
         self.current_func = node.name
-        self.class_func_attr_dict[self.current_class][self.current_func]= set()
+        if (self.current_class):
+            self.class_func_attr_dict[self.current_class][self.current_func]= set()
         self.generic_visit(node)
         self.current_func = None
         

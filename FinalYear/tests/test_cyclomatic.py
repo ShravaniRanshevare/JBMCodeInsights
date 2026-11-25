@@ -44,6 +44,6 @@ def f(a,b):
     tree = ast.parse(code)
     cyclo = CyclomaticAnalyzer()
     cyclo.visit(tree)
-    res = sum(cyclo.return_results().values()) #52
+    res = sum(cyclo.return_results().values()) #3
     assert res == 3
     

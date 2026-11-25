@@ -12,6 +12,7 @@ from datetime import datetime
 from .analyze import analyze_source_code,fetch_file
 import json
 import ast
+import re
 
 def get_db():
     db = SessionLocal()
@@ -51,153 +52,274 @@ def get_file_content(file_path:str):
 
 #this can be reused by retry and first try since the differentiating logic is located in recs prompt
 def create_refactor_prompt(file_content:str, recs: str):
-    prompt = f"""
-    You are a senior Python software engineer.
-    Refactor the code below.
-    
-    Requirements:
-    
-    - Preserve functionality exactly.
-    - Apply every recommendation provided.
-    - Reduce duplication.
-    - Improve readability.
-    - Improve maintainability.
-    - Reduce complexity where possible.
-    - Return the COMPLETE source file.
-    """
-    
-    prompt += f"""
-    Recommendations:
-    {recs}
-    
-    Code:
-    {file_content}
-    
-    Return only Python code.
-    No explanations.
-    No markdown.
-    """
-    return prompt
+    return f"""
+You are a senior Python software engineer.
+
+TASK:
+Refactor the supplied Python code.
+
+RECOMMENDATIONS TO IMPLEMENT:
+{recs}
+
+SOURCE CODE:
+{file_content}
+
+MANDATORY RULES:
+
+1. Implement ALL recommendations.
+2. Preserve functionality exactly.
+3. Do not remove classes.
+4. Do not remove public methods.
+5. If helper methods are introduced, keep the original public methods.
+6. Reduce duplication.
+7. Reduce nesting.
+8. Improve readability.
+9. Improve maintainability.
+10. Reduce complexity where possible.
+
+FUNCTIONALITY PRESERVATION RULE
+
+The refactored code must run successfully.
+
+A refactor that introduces syntax errors, import errors,
+attribute errors, name errors, or behavioural regressions
+is considered INVALID even if it improves maintainability.
+
+OUTPUT CONTRACT (HIGHEST PRIORITY)
+
+Return VALID JSON ONLY.
+
+{{
+  "refactored_code": "<python source code>"
+}}
+
+Forbidden:
+- markdown
+- code fences
+- explanations
+- notes
+- apologies
+- examples
+- html
+- xml
+- yaml
+- surrounding text
+
+The FIRST character of your response must be {{
+The LAST character of your response must be }}
+
+If you output anything outside the JSON object, your response is invalid.
+"""
 
 def create_recommendations_prompt(file_content:str, cognitive_score: int,cyclomatic_score:int,
                   halstead_volume: float,loc: int,mi: float,cbo: float,
                   lcom:float,final_complex_score: float,final_maintain_score:float):
-    prompt = """You are a senior Python software engineer.
-                Analyze the code and generate refactoring recommendations.
-                
-                """
-    prompt += f"""
-                Requirements:
-                
-                1. Recommendations must be concrete and implementable.
-                2. Recommendations must be specific to the supplied code.
-                3. Recommendations must describe code changes.
-                4. Recommendations should target:
-                       - high cognitive complexity
-                       - duplicated logic
-                       - excessive nesting
-                       - poor naming
-                       - long methods
-                       - maintainability issues
+     return f"""
+You are a senior Python software engineer.
 
-                Do NOT generate vague recommendations such as:
-                - improve maintainability
-                - improve readability
-                - separate concerns
-                - simplify the code
-                
-                Instead generate recommendations such as:
-                - Extract helper method X from method Y
-                - Rename variable A to B
-                - Move repeated logic into a shared function
-                - Replace nested conditional with guard clauses
-   
-                Below are Static Analysis Results to help you structure recommendations:
-                1) cognitive complexity score: {cognitive_score}
-                2) cyclomatic complexity score: {cyclomatic_score}
-                3) halstead volume: {halstead_volume}
-                4) lines of code: {loc}
-                5) maintainability index: {mi}
-                6) coupling between objects: {cbo}
-                7) lack of cohesion in methods: {lcom}
-                
-                Final Scores calculated:
-                complexity: {final_complex_score}
-                maintainability: {final_maintain_score}
-                
-                """
-    prompt += "code: " + file_content
-    prompt += """
+Analyze the supplied Python source code and generate exactly 5 IMPLEMENTABLE refactoring recommendations.
 
-                Return JSON and return only **5 Recommendations**:
-                
-                {
-                "recommendations": [
-                    "recommendation 1",
-                    "recommendation 2",
-                    "recommendation 3"]
-                    }
-            """
-    return prompt
+METRICS:
 
-def prompt_retry_rec(code: str ,complexity_score: float , maintainability_score: float, user_feedback: str):
-    prompt = f"""
-            You are a senior Python software engineer whose expertise lie in implementing constructive feedback thoroughly
-            ,reducing complexity of code as much as possible as well as increasing maintainability of code. You are to provide recommendations
-            on provided code based on requirements given below:
-            
-            """
-    prompt += f"""
-                Requirements:
-                
-                1. Recommendations must be concrete and implementable.
-                2. Recommendations must be specific to the supplied code.
-                3. Recommendations must describe code changes.
-                4. Recommendations should target:
-                       - high cognitive complexity
-                       - duplicated logic
-                       - excessive nesting
-                       - poor naming
-                       - long methods
-                       - maintainability issues
+Cognitive Complexity: {cognitive_score}
+Cyclomatic Complexity: {cyclomatic_score}
+Halstead Volume: {halstead_volume}
+LOC: {loc}
+Maintainability Index: {mi}
+CBO: {cbo}
+LCOM: {lcom}
 
-                Do NOT generate vague recommendations such as:
-                - improve maintainability
-                - improve readability
-                - separate concerns
-                - simplify the code
-                
-                Instead generate recommendations such as:
-                - Extract helper method X from method Y
-                - Rename variable A to B
-                - Move repeated logic into a shared function
-                - Replace nested conditional with guard clauses
-                
-                """
-    prompt += f"""
-                You have also been given the constructive feedback of a user which has to be implemented in the code you send back.
-                DO NOT TRY TO IGNORE THIS FEEDBACK. Use it to structure your recommendations inorder to suit the feedback and code better.
-                
-                {user_feedback}
-                
-                Here are the current complexity and maintainability scores of the given code:
-                1. complexity : {complexity_score}
-                2. maintainability : {maintainability_score}
-                
-                """
-    prompt += "code: " + code
-    prompt += """
+FINAL SCORES:
 
-                Return JSON and return only **5 Recommendations**:
-                
-                {
-                "recommendations": [
-                    "recommendation 1",
-                    "recommendation 2",
-                    "recommendation 3"]
-                    }
-            """
-    return prompt
+Complexity: {final_complex_score}
+Maintainability: {final_maintain_score}
+
+SOURCE CODE:
+
+{file_content}
+
+RULES:
+
+1. Generate exactly 5 recommendations.
+2. Recommendations must be concrete.
+3. Recommendations must reference actual code.
+4. Recommendations must be implementable.
+5. Recommendations must target:
+   - duplication
+   - nesting
+   - long methods
+   - maintainability
+   - complexity
+
+DO NOT GENERATE:
+
+- improve readability
+- improve maintainability
+- simplify code
+- separate concerns
+- use better design
+
+GOOD EXAMPLES:
+
+- Extract helper method find_member from borrow_book.
+- Extract helper method find_book from return_book.
+- Replace nested conditional in send_notifications using guard clauses.
+- Move duplicated lookup logic into a shared helper method.
+
+OUTPUT CONTRACT:
+
+Return VALID JSON ONLY.
+
+{{
+  "recommendations": [
+    "recommendation 1",
+    "recommendation 2",
+    "recommendation 3",
+    "recommendation 4",
+    "recommendation 5"
+  ]
+}}
+
+DO NOT RETURN ANYTHING EXCEPT JSON.
+"""
+
+def prompt_retry_rec(current_ref_code: str ,original_code: str, complexity_score: float , maintainability_score: float, user_feedback: str):
+   return f"""
+You are a senior Python software engineer.
+ 
+Generate exactly 5 refactoring recommendations.
+ 
+CRITICAL PRIORITY:
+ 
+USER FEEDBACK OVERRIDES EVERYTHING ELSE.
+ 
+USER FEEDBACK:
+ 
+{user_feedback}
+ 
+ORIGINAL SOURCE CODE:
+ 
+{original_code}
+ 
+CURRENT REFACTORED CODE:
+ 
+{current_ref_code}
+ 
+CURRENT SCORES:
+ 
+Complexity: {complexity_score}
+Maintainability: {maintainability_score}
+ 
+RULES:
+ 
+1. Recommendations MUST satisfy user feedback.
+2. Recommendations MUST preserve behaviour from the original source.
+3. Recommendations MUST NOT remove functionality.
+4. Recommendations MUST NOT remove classes from the original source.
+5. Recommendations MUST NOT remove public methods from the original source.
+6. If functionality was removed, recommendations must restore it.
+7. Generate exactly 5 concrete recommendations.
+ 
+OUTPUT CONTRACT:
+ 
+Return VALID JSON ONLY.
+ 
+{{
+"recommendations": [
+"recommendation 1",
+"recommendation 2",
+"recommendation 3",
+"recommendation 4",
+"recommendation 5"
+]
+}}
+ 
+DO NOT RETURN ANYTHING EXCEPT JSON.
+"""
+    
+
+def prompt_retry_ref(current_ref_code:str,og_code: str, recs: str, user_feedback:str):
+    return f"""
+You are a senior Python software engineer.
+
+TASK:
+Modify the current refactored code.
+
+USER FEEDBACK:
+
+{user_feedback}
+
+RECOMMENDATIONS TO IMPLEMENT:
+
+{recs}
+
+ORIGINAL SOURCE CODE:
+
+{og_code}
+
+CURRENT REFACTORED CODE:
+
+{current_ref_code}
+
+MANDATORY RULES:
+
+1. User feedback takes highest priority.
+2. Implement ALL recommendations.
+3. Preserve original behaviour.
+4. Preserve all classes from the original source.
+5. Preserve all public methods from the original source.
+6. Restore any classes removed from the original source.
+7. Restore any methods removed from the original source.
+8. Reduce duplication.
+9. Reduce nesting.
+10. Improve maintainability.
+11. Improve readability.
+12. Reduce complexity where possible.
+
+VERIFICATION CHECKLIST:
+
+Before returning code verify:
+
+- Every original class exists.
+- Every original public method exists.
+- User feedback has been implemented.
+- All recommendations have been implemented.
+- Behaviour remains equivalent.
+
+FUNCTIONALITY PRESERVATION RULE
+
+The refactored code must run successfully.
+
+A refactor that introduces syntax errors, import errors,
+attribute errors, name errors, or behavioural regressions
+is considered INVALID even if it improves maintainability.
+
+OUTPUT CONTRACT (HIGHEST PRIORITY)
+
+Return VALID JSON ONLY.
+
+{{
+  "refactored_code": "<python source code>"
+}}
+
+Forbidden:
+- markdown
+- code fences
+- explanations
+- notes
+- apologies
+- examples
+- html
+- xml
+- yaml
+- surrounding text
+
+The FIRST character of your response must be {{
+The LAST character of your response must be }}
+
+If you output anything outside the JSON object, your response is invalid.
+"""
+
     
     
 
@@ -293,6 +415,7 @@ async def get_first_refactor(refactor_deets: InitialRefactor,db:db_dependency,us
             "model": "llama3",
             "prompt":prompt_ref,
             "stream":False,
+            "format":"json"
             }
         )
     
@@ -310,12 +433,17 @@ async def get_first_refactor(refactor_deets: InitialRefactor,db:db_dependency,us
             }
         )
         data2 = response2.json()
-    
-    result2 = data2["response"]
+        
+    result2 = json.loads(data2["response"])
+    code = str(result2["refactored_code"])
+    code = code.replace("```python", "")
+    code = code.replace("```", "")
+    code = code.replace("````python", "")
+    code = code.strip()
 
     generated = datetime.now().date()
     
-    res = await store_ref_results(analysis_id, recs, result2, generated, db)
+    res = await store_ref_results(analysis_id, recs, code, generated, db)
     return res  #for the UI analysis,id,rec,ref,generatedat
 
 
@@ -325,11 +453,17 @@ async def get_retry_refactor(refactor_deets: RetryRefactor,db:db_dependency,user
         raise HTTPException(status_code = 401, detail="User not authenticated")
     analysis_id = refactor_deets.analysis_id
     user_feedback = refactor_deets.user_feedback
+    
     analysis_obj = db.query(Analysis).filter(Analysis.id==analysis_id).first()
     if not analysis_obj:
         raise HTTPException(status_code=404, detail="No such analysis found")
     
+    #need to fetch the original code incase user wnted to go back or the model needs to know exact logic
+    file_id = analysis_obj.file_id
+    file_data = await fetch_file(file_id,analysis_obj.proj_id,db,user)
+    og_code = get_file_content(file_data["file_path"])
     
+    #getting prev ref 
     ref_id = refactor_deets.refactor_id
     ref = db.query(Refactorisations).filter(Refactorisations.analysis_id== analysis_id).filter(Refactorisations.id == ref_id).first()
     if not ref:
@@ -344,7 +478,7 @@ async def get_retry_refactor(refactor_deets: RetryRefactor,db:db_dependency,user
     complexity_score = ref.complexity_after
     maintainability_score = ref.maintainability_after
     
-    prompt_rec = prompt_retry_rec(code,complexity_score, maintainability_score, user_feedback)
+    prompt_rec = prompt_retry_rec(code,og_code,complexity_score, maintainability_score, user_feedback)
     
 
     response1 = requests.post(
@@ -371,17 +505,18 @@ async def get_retry_refactor(refactor_deets: RetryRefactor,db:db_dependency,user
         data1 = response1.json()
         
     result1 = json.loads(data1["response"])
-    print(result1)
+    
     
     recs = str(result1["recommendations"])
     
-    prompt_ref = create_refactor_prompt(code,recs)
+    prompt_ref = prompt_retry_ref(code, og_code,recs,user_feedback)
     response2 = requests.post(
         "http://localhost:11434/api/generate",
         json = {
             "model": "llama3",
             "prompt":prompt_ref,
             "stream":False,
+            "format": "json"
             }
         )
     
@@ -399,11 +534,17 @@ async def get_retry_refactor(refactor_deets: RetryRefactor,db:db_dependency,user
             }
         )
         data2 = response2.json()
+     
+    result2 = json.loads(data2["response"])
+    code = str(result2["refactored_code"])
+    code = code.replace("```python", "")
+    code = code.replace("```", "")
+    code = code.replace("````python", "")
+    code = code.strip()
     
-    result2 = data2["response"]
-    print(result2)
+    
     generated = datetime.now().date()
-    res = await update_ref_results(ref_id, recs, result2, generated, db) #update exisitng entry instead of new records.
+    res = await update_ref_results(ref_id, recs, code, generated, db) #update exisitng entry instead of new records.
     return res  #for the UI analysis,id,rec,ref,generatedat
 
 
@@ -428,7 +569,11 @@ async def analyze_refactored(proj_id:int,analysis_id:int,refactor_id:int, db:db_
     refactored_code = refactored_code.replace("```python", "")
     refactored_code = refactored_code.replace("```", "")
     refactored_code = refactored_code.strip()
-    ast_tree = ast.parse(refactored_code)
+    try:
+        ast_tree = ast.parse(refactored_code)
+    except SyntaxError as e:
+        raise HTTPException( status_code = 400, detail = f"Generated code is invalid python : {e} ")
+    
     score_model = await analyze_source_code(ast_tree,proj_id,db,None,analysis_id)
     data.complexity_after = score_model["complexity_score"]
     data.maintainability_after = score_model["maintainability_score"]

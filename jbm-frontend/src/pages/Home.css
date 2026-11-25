@@ -1,0 +1,36 @@
+.eye{
+	position: absolute;
+	font-size: 4-rem;
+	opacity: 0.15%;
+	animation: float ease-in-out infinite,
+	blink 12s infinite;
+}
+
+@keyframes float{
+	0% {
+	transform: translateY(0px);
+	}
+
+	50%{
+	transform: translateY( -5px);
+	}
+	100%{
+	transform: translateY(0px);
+	}
+}
+
+
+
+
+@keyframes blink {
+
+    0%,
+    96%,
+    100% {
+        scale: 1;
+    }
+
+    98% {
+        scale: 0.8 0.1;
+    }
+}

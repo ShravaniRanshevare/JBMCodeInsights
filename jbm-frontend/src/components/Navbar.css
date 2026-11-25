@@ -1,0 +1,17 @@
+.nav-link {
+	color: black;
+	padding: 12px 20px;
+	text-decoration: none;
+	display: "block";
+	transition: all 0.2s ease;
+}
+
+.nav-link:hover{
+	color: white;
+	-webkit-text-stroke: 1px black;
+}
+
+.nav-link active{
+	color: white;
+	-webkit-text-stroke: 1px black;
+}

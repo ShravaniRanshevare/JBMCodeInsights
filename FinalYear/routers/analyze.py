@@ -55,7 +55,10 @@ def final_LCOM(lcom_score): #per class score based off of methods attrs even cbo
 
     
 def normalize_CBO(avg_cbo):
-    cbo = min(avg_cbo/10,1) #higher score utna coupling
+    if avg_cbo:
+        cbo = min(avg_cbo/10,1) #higher score utna coupling
+    else:
+        cbo = 1
     cbo = 1 - cbo
     return cbo
 
