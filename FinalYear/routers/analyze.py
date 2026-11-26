@@ -10,6 +10,7 @@ from pathlib import Path
 from .metrics import cognitive_complexity_calculator,cyclomatic_complexity,LOC,maintainabilityIndex,halstead_vol,CBO,LCOM,maxNestingDepth,codesmells
 import ast
 import math
+from datetime import date
 
 router = APIRouter ( prefix="/analyse" , tags = ["analyse"])
 
@@ -311,26 +312,50 @@ async def delete_analysis(proj_id: int, analysis_id:int, db:db_dependency, user:
 async def get_overview(db:db_dependency, user: user_dependency):
     if not user:
         raise HTTPException(status_code=401,detail="Need to authenticate before you can proceed")
-    projects_list = (db.query(Project).filter(Project.user_id==user["id"]).filter(Project.id==proj_id).all())
-    number_proj=0
-    if projects_list:
-        number_proj = len(projects_list)
+    projects_list = (db.query(Project).filter(Project.user_id==user["id"]).all())
+    
+    number_proj = len(projects_list)
+    
     number_analysis = 0
     avg_complexity = 0.0
     total_complexity=0
     avg_maintainability = 0.0
     total_maintainability=0
+    
     for proj in projects_list:
-        res = (db.get(Analysis).filter(Analysis.proj_id==proj_id).all())
-        proj_analysis = len(res)
-        number_analysis += proj_analysis
-        total_complexity += sum([ analysis.complexity_score for analysis in res])
-        total_maintainability += sum([ analysis.maintainability_score for analysis in res])
+        analyses = (db.query(Analysis).filter(Analysis.proj_id==proj.id).all())
+        number_analysis += len(analyses)
+        total_complexity += sum(analysis.complexity_score for analysis in analyses)
+        total_maintainability += sum(analysis.maintainability_score for analysis in analyses)
+        
+    if number_analysis > 0:
+        avg_complexity = round(total_complexity/number_analysis,1)
+        avg_maintainability = round(total_maintainability/number_analysis,1)
     
-    avg_complexity = round(total_complexity/number_analysis,1)
-    avg_maintainability = round(total_maintainability/number_analysis,1)
+    return {"total_projects": number_proj, "total_analyses":number_analysis, "avg_complexity": avg_complexity, "avg_maintainability": avg_maintainability}
     
-    return {"projects": number_proj, "analysis done":number_analysis, "avg_complexity": avg_complexity, "avg_maintainability": avg_maintainability}
+@router.get("/dashboard/graph",status_code = status.HTTP_200_OK)
+async def get_graph(db:db_dependency, user: user_dependency):
+    if not user:
+        raise HTTPException(status_code=401,detail="Need to authenticate before you can proceed")
+    today = date.today()
+    projects = (db.query(Project).filter(Project.user_id==user["id"].all()))
+    project_ids = [ p.id for p in projects]
     
-
+    analyses = db.query(Analysis).filter(Analysis.proj_id.in_(project_ids)).order_by(Analysis.id.desc()).limit(10).all()
+    #all recent analysis done ids are incrementing hence a greater id means record created later on
+    
+    analyses.reverse()
+    
+    return [
+        {"analysis_number": analysis.id, "complexity": analysis.complexity_score, "maintainability": analysis.maintainability_score}
+        for analysis in analyses]
+    
+    
+    
+    
+    
+    
+    
+    
     
