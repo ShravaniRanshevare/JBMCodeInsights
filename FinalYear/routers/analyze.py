@@ -330,7 +330,7 @@ async def get_overview(db:db_dependency, user: user_dependency):
     avg_complexity = round(total_complexity/number_analysis,1)
     avg_maintainability = round(total_maintainability/number_analysis,1)
     
-    return {"projects": number_proj, "analysis done":number_analysis, "average complexity": avg_complexity, "average maintainability": avg_maintainability}
+    return {"projects": number_proj, "analysis done":number_analysis, "avg_complexity": avg_complexity, "avg_maintainability": avg_maintainability}
     
 
     
