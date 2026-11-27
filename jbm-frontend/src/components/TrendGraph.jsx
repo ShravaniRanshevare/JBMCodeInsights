@@ -59,9 +59,9 @@ function TrendGraph(){
 	}, []);
 
 	return (
-		<div className="flex flex-col justify-between gap-10">
+		<div className="flex flex-col justify-between align-center items-center gap-10">
 			{/* Graph */}
-			<div className="bg-white px-12 py-11 rounded-xl shadow-lg w-250">
+			<div className="bg-white rounded-xl shadow-lg w-250">
 				<ResponsiveContainer width="90%" height={500}>
 					<LineChart data={data}>
 						<CartesianGrid stroke="#D9D9D9" />
