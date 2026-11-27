@@ -28,16 +28,16 @@ function Landing(){
 		<div className= "eye eye5"> 👁️</div>
 		<div className= "eye eye6"> 👁️</div>
 	<div className="content">
-		<h1 className="text-5xl font-bold mb-10 font-serif" style={{ color: colours.text}}>
+		<h1 className="mt-20 text-center text-5xl font-bold mb-10 font-serif" style={{ color: colours.text}}>
 			Welcome to JBMCodeInsights </h1>
-			<p className="subtitle" style = {{color: colours.text}}> Where we have all Insights</p>
+			<p className="text-center subtitle" style = {{color: colours.text, fontFamily: "Georgia,serif"}}> Where We Have All Insights</p>
 
-		<div className="button-group">
-			<NavLink to = "/login" className="p-3 rounded-lg text-white" style={{ backgroundColor: colours.text, WebkitTextStroke: "1px black" }}>
+		<div className="mt-10 button-group">
+			<NavLink to = "/login" className="text-center w-40 h-20 p-3 rounded-lg text-black hover:text-white" style={{ backgroundColor: colours.text}}>
 				Login
 			</NavLink>
 
-			<NavLink to = "/signin" className="p-3 rounded-lg text-white" style={{ backgroundColor: colours.text, WebkitTextStroke: "1px black" }}>
+			<NavLink to = "/signin" className="text-center w-40 h-20 p-3 rounded-lg text-black hover:text-white" style={{ backgroundColor: colours.text}}>
 				Sign In
 			</NavLink>
 		</div>

@@ -1,6 +1,8 @@
 .nav-link {
-	color: black;
+	color: #6E3000;
+	opacity: 0.8;
 	padding: 12px 20px;
+	font-family: "Georgia,Serif";
 	text-decoration: none;
 	display: "block";
 	transition: all 0.2s ease;

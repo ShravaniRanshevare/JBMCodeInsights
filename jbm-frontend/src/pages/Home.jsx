@@ -25,9 +25,7 @@ return (
 			<p className= "text-center text-lg text-gray-700 mb-10 p-4" style={{fontSize: "1rem"}}>
 			Track how your code quality evolves over time !
 			</p>
-		<div className="align-center items-center">
 			<TrendGraph />
-		</div>
 		</div>
 	</div>
 

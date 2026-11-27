@@ -49,16 +49,17 @@ return (
 	<div className="absolute top-6 right-6" style={{color: colours.pageBg, opacity: 0.9, fontSize: "1.5rem",
 		fontWeight: "bold", fontFamily: "Georgia,serif"}}> JBMCodeInsights </div>
 	<div className="min-h-screen flex flex-col justify-center items-center gap-2 shadow-lg">
-			<form className="bg-[#FFF5DB] p-12 rounded-3xl shadow-lg w-[380px] min-h-[370px] flex flex-col gap-6 ">
+			<form className="bg-[#FFF5DB] p-12 rounded-3xl shadow-lg w-[380px] min-h-[375px] flex flex-col 
+				align-items items-center gap-6 ">
 					<h1 className="text-center font-semibold text-xl text-black p-15">Login</h1>
 				<input placeholder= "Enter Username" type="text" name="username" 
-				value={username} onChange= {(e)=> setUsername(e.target.value)} className= "mt-10 h-30 text-xl rounded-2xl text-black p-6" style={{ backgroundColor: colours.pageBg, opacity: 0.8}}/>
+				value={username} onChange= {(e)=> setUsername(e.target.value)} className= "w-85 h-30 text-xl rounded-2xl text-black p-6" style={{ backgroundColor: colours.pageBg, opacity: 0.8}}/>
 
 				<input placeholder= "Enter Password" type="password" 
-				name="password" value={password} onChange={(e)=> setPassword(e.target.value)} className= "h-30 text-xl rounded-2xl text-black p-6" 
+				name="password" value={password} onChange={(e)=> setPassword(e.target.value)} className= "h-30 w-85 text-xl rounded-2xl text-black p-6" 
 				style={{ backgroundColor: colours.pageBg, opacity: 0.8}}/>
 
-				<button type="button" onClick={handleLogin} className= "h-10 px-10 py-3 rounded-full font-semibold text-lg self-center w-40 transition-all hover:scale-105" 
+				<button type="button" onClick={handleLogin} className= "h-8 px-10 py-3 rounded-full font-semibold text-lg self-center w-40 transition-all hover:scale-105" 
 					style={{ backgroundColor: colours.pageBg, opacity: 0.8}}> Login </button>
 			</form>
 		<NavLink to="/signin" className="mt-6 text-xl text-black hover:text-gray-700" style={{opacity: 0.5, fontSize: "1rem", fontFamily: "Georgia,serif"}}> Don't have an account? Sign Up Instead </NavLink>

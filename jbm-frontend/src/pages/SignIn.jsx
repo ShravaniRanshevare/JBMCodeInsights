@@ -66,17 +66,18 @@ return (
 	<div className="absolute top-6 right-6" style = {{ color: colours.pageBg, opacity:0.9, fontSize:"1.5rem",
 		fontWeight: "bold", fontFamily: "Georgia,Serif" }}> JBMCodeInsights </div>
 	<div className="min-h-screen flex flex-col justify-center items-center gap-2 shadow-lg">
-		<form className="bg-[#FFF5DB] p-12 rounded-3xl w-[380px] h-[370px] shadow-lg flex flex-col gap-2">
+		<form className="bg-[#FFF5DB] p-12 rounded-3xl w-[380px] h-[390px] shadow-lg flex flex-col align-items 
+			items-center gap-2">
 			<h1 className="text-center font-semibold text-xl text-black p-15">Sign In </h1>
 			<input type="text" name="username" value={username} placeholder="Enter Username"
-				onChange={ (e)=> setUsername(e.target.value)} className= "h-30 text-xl rounded-2xl text-black p-6" style={{ backgroundColor: colours.pageBg}}/>
+				onChange={ (e)=> setUsername(e.target.value)} className= "w-85 h-30 text-xl rounded-2xl text-black p-6" style={{ backgroundColor: colours.pageBg, opacity: 0.8}}/>
 			<input type="text" name="email" value={email} placeholder="Enter Email"
-				onChange={ (e)=> setEmail(e.target.value)} className= "h-30 text-xl rounded-2xl text-black p-6" style={{ backgroundColor: colours.pageBg}} />
+				onChange={ (e)=> setEmail(e.target.value)} className= "w-85 h-30 text-xl rounded-2xl text-black p-6" style={{ backgroundColor: colours.pageBg, opacity: 0.8}} />
 			<input type="password" name="password" value={password} placeholder="Enter Password"
-				onChange={ (e)=> setPassword(e.target.value)} className= "h-30 text-xl rounded-2xl text-black p-6" style={{ backgroundColor: colours.pageBg}} />
-			<button type="submit" onClick={handleSignin} className="rounded-full h-10 px-10 py-3 font-semibold text-lg self-center w-40 transition-all hover:scale-105 " style={{ backgroundColor: colours.pageBg}}> Sign In </button>
+				onChange={ (e)=> setPassword(e.target.value)} className= "w-85 h-30 text-xl rounded-2xl text-black p-6" style={{ backgroundColor: colours.pageBg, opacity: 0.8}} />
+			<button type="submit" onClick={handleSignin} className="rounded-full h-10 px-10 py-3 font-semibold text-lg self-center w-40 transition-all hover:scale-105 " style={{ backgroundColor: colours.pageBg, opacity: 0.8}}> Sign In </button>
 		</form>
-		<NavLink to="/login" className="text-sml text-black p-5 hover:text-gray-700">Already have an account? Login </NavLink>
+		<NavLink to="/login" className="text-sml text-black p-5 hover:text-gray-700" style={{opacity: 0.5, fontSize: "1rem", fontFamily: "Georgia,serif"}}>Already have an account? Login </NavLink>
 	</div>
 </div>
 
