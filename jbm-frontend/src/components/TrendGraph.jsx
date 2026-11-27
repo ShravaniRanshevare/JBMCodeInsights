@@ -59,9 +59,9 @@ function TrendGraph(){
 	}, []);
 
 	return (
-		<div className="space-y-8 p-6">
+		<div className="flex flex-col justify-between gap-10">
 			{/* Graph */}
-			<div className="bg-white p-8 rounded-xl shadow">
+			<div className="bg-white px-12 py-11 rounded-xl shadow-lg w-250">
 				<ResponsiveContainer width="90%" height={500}>
 					<LineChart data={data}>
 						<CartesianGrid stroke="#D9D9D9" />
@@ -86,7 +86,7 @@ function TrendGraph(){
            	</div>
            	{/* KPI Cards */}
            	<div className="grid grid-cols-2 gap-8" style={{backgroundColor: colours.pageBg}}>
-           		<div className="bg-white p-6 rounded-2xl shadow-md">
+           		<div className="w-80 bg-white p-6 rounded-2xl shadow-md">
            			<h3 className="text-gray-500">
            				Total Projects
            			</h3>
@@ -94,7 +94,7 @@ function TrendGraph(){
            				{projects}
            			</p>
            		</div>
-           		<div className="bg-white p-6 rounded-2xl shadow-md">
+           		<div className="w-80 bg-white p-6 rounded-2xl shadow-md">
            			<h4 className= "text-gray-500">
            				Total Analyses
            			</h4>
@@ -102,7 +102,7 @@ function TrendGraph(){
            				{analyses}
            			</p>
            		</div>
-           		<div className="bg-white p-6 rounded-2xl shadow-md">
+           		<div className="w-80 bg-white p-6 rounded-2xl shadow-md">
            			<h5 className= "text-gray-500">
            				Average Complexity
            			</h5>
@@ -110,7 +110,7 @@ function TrendGraph(){
            				{avg_complexity}
            			</p>
            		</div>
-           		<div className="bg-white p-6 rounded-2xl shadow-md">
+           		<div className="w-80 bg-white p-6 rounded-2xl shadow-md">
            			<h6 className= "text-gray-500">
            				Average Maintainability
            			</h6>
