@@ -10,7 +10,7 @@ const colours = {
 
 function Navbar() {
 	return (
-		<aside className= "flex flex-col justify-between gap-3 w-50 min-h-screen p-6 shadow-lg" 
+		<aside className= "flex flex-col gap-15 w-50 min-h-screen p-6 shadow-lg" 
 			style = {{ backgroundColor: colours.sidebarBg}}>
 			<h1 className="text-center text-xl font-bold " style={{opacity:0.5, fontFamily: "Georgia,Serif"}}>
 				JBMCodeInsights
@@ -21,10 +21,10 @@ function Navbar() {
 				</NavLink>
 			</div>
 			
-				<div className= "border-t border-gray-400 my-2"></div>
+			<div className= "border-t border-gray-400 my-2 mb-20"></div>
 			
-				<nav className=" ">
-					<ul className= "space-y-10">
+			<nav>
+					<ul className= "flex flex-col gap-15">
 					<li>
 						<NavLink to = "/projects" 
 							className = {({ isActive }) => isActive ? "nav-link active": "nav-link"}>
@@ -47,7 +47,7 @@ function Navbar() {
 						</NavLink>
 					</li>
 					</ul>
-				</nav>	
+			</nav>	
 			
 		</aside>
 

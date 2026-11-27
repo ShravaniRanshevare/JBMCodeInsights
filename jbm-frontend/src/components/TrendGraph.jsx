@@ -59,7 +59,7 @@ function TrendGraph(){
 	}, []);
 
 	return (
-		<div className="min-h-screen flex flex-col justify-between align-center items-center">
+		<div className="min-h-screen flex flex-col gap-12 align-center items-center">
 			{/* Graph */}
 			<div className="bg-white rounded-xl shadow-lg w-250">
 				<ResponsiveContainer width="90%" height={560}>
