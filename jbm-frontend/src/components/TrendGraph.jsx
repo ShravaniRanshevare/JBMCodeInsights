@@ -59,10 +59,10 @@ function TrendGraph(){
 	}, []);
 
 	return (
-		<div className="flex flex-col justify-between align-center items-center gap-10">
+		<div className="min-h-screen flex flex-col justify-between align-center items-center">
 			{/* Graph */}
 			<div className="bg-white rounded-xl shadow-lg w-250">
-				<ResponsiveContainer width="90%" height={500}>
+				<ResponsiveContainer width="90%" height={560}>
 					<LineChart data={data}>
 						<CartesianGrid stroke="#D9D9D9" />
 						<XAxis dataKey= "analysis_number" />
@@ -86,35 +86,35 @@ function TrendGraph(){
            	</div>
            	{/* KPI Cards */}
            	<div className="grid grid-cols-2 gap-8" style={{backgroundColor: colours.pageBg}}>
-           		<div className="w-80 bg-white p-6 rounded-2xl shadow-md">
-           			<h3 className="text-gray-500">
+           		<div className="w-100 bg-white p-6 rounded-xl shadow-lg">
+           			<h3 className=" text-center text-gray-500">
            				Total Projects
            			</h3>
-           			<p className= "text-3xl font-bold">
+           			<p className= " text-center text-3xl font-bold">
            				{projects}
            			</p>
            		</div>
-           		<div className="w-80 bg-white p-6 rounded-2xl shadow-md">
-           			<h4 className= "text-gray-500">
+           		<div className="w-100 bg-white p-6 rounded-xl shadow-lg">
+           			<h4 className= " text-center text-gray-500">
            				Total Analyses
            			</h4>
-           			<p className="text-3xl font-bold">
+           			<p className=" text-center text-3xl font-bold">
            				{analyses}
            			</p>
            		</div>
-           		<div className="w-80 bg-white p-6 rounded-2xl shadow-md">
-           			<h5 className= "text-gray-500">
+           		<div className="w-100 bg-white p-6 rounded-xl shadow-lg">
+           			<h5 className= " text-center text-gray-500">
            				Average Complexity
            			</h5>
-           			<p className="text-3xl font-bold">
+           			<p className=" text-center text-3xl font-bold">
            				{avg_complexity}
            			</p>
            		</div>
-           		<div className="w-80 bg-white p-6 rounded-2xl shadow-md">
-           			<h6 className= "text-gray-500">
+           		<div className="w-100 bg-white p-6 rounded-xl shadow-lg">
+           			<h6 className= " text-center text-gray-500">
            				Average Maintainability
            			</h6>
-           			<p className="text-3xl font-bold">
+           			<p className=" text-center text-3xl font-bold">
            				{avg_maintainability}
            			</p>
            		</div>
