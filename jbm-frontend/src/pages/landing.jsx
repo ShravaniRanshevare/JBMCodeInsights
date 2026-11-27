@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-import "./landing.css";
+import "../css/landing.css";
 
 const colours = {
 	pageBG: "#FFF8D6",
@@ -17,7 +17,7 @@ function Landing(){
 	if (token){
 		return <Navigate to = "/Home" />;
 	}
-	
+
 	return (
 	<div className="min-h-screen flex justify-center align-center text-align-center p-10" style = {{ backgroundColor: colours.pageBG}}>
 		{/* Floating Eyes */}
@@ -33,11 +33,11 @@ function Landing(){
 			<p className="subtitle" style = {{color: colours.text}}> Where we have all Insights</p>
 
 		<div className="button-group">
-			<NavLink to = "/login" className="p-3 rounded-lg text-white" style={{ backgroundColor: text, -webkit-text-stroke: black }}>
+			<NavLink to = "/login" className="p-3 rounded-lg text-white" style={{ backgroundColor: colours.text, WebkitTextStroke: "1px black" }}>
 				Login
 			</NavLink>
 
-			<NavLink to = "/signin" className="p-3 rounded-lg text-white" style={{ backgroundColor: text, -webkit-text-stroke: black }}>
+			<NavLink to = "/signin" className="p-3 rounded-lg text-white" style={{ backgroundColor: colours.text, WebkitTextStroke: "1px black" }}>
 				Sign In
 			</NavLink>
 		</div>
@@ -45,7 +45,6 @@ function Landing(){
 </div>
 
 	);
-
 
 
 }

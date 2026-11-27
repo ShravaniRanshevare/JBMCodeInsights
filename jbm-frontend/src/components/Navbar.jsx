@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
-import "./Navbar.css";
+import "../css/Navbar.css";
 
 const colours = {
-	sidebarBg: "#FFCB30",
+	sidebarBg: "#FFDC73",
 	text : "#000000",
 	selectedText : "#FFFFFF",
 	TextBorder : "2px solid #000000",
@@ -10,8 +10,8 @@ const colours = {
 
 function Navbar() {
 	return (
-		<aside className= "w-64 h-screen flex flex-col justify-between p-6" style = {{ backgroundColor: colours.sidebarBg}}>
-			<h1 className="text-2xl font-bold mb-10">
+		<aside className= "w-50 h-screen flex flex-col justify-between p-6" style = {{ backgroundColor: colours.sidebarBg}}>
+			<h1 className="text-xl font-bold mb-3">
 				JBMCodeInsights
 			</h1>
 
@@ -20,10 +20,10 @@ function Navbar() {
 					👤 Profile
 				</NavLink>
 			</div>
-			<div className= "border-t border-gray-400 my-6"></div>
+			<div className= "border-t border-gray-400 my-2"></div>
 			<div>
 				<nav>
-					<ul className= "space-y-4">
+					<ul className= "space-y-6">
 					<li>
 						<NavLink to = "/projects" 
 							className = {({ isActive }) => isActive ? "nav-link active": "nav-link"}>

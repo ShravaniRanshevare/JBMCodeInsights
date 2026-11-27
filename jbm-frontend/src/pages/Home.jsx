@@ -1,4 +1,5 @@
 import TrendGraph from "../components/TrendGraph";
+import "../css/Home.css"
 
 const colours = {
 	pageBg: "#FFF8D6",
@@ -12,16 +13,20 @@ function Home(){
 
 return (
 	<div 
-		className= "min-h-screen p-10"
+		className= "min-h-screen justify-center align-center p-5"
 		style = {{ backgroundColor: colours.pageBg }}>
-		<h1 className= "text-5xl font-bold font-serif mb-4" style={{color: colours.heading}}>
-			JBMCodeInsights <div className= "eye"> 👁️</div> </h1> 
+		<div className="flex items-center gap-4 mb-4">
+			<h1 className= "align-center text-5xl font-bold font-serif mb-4 p-4" style={{color: colours.heading}}>
+				JBMCodeInsights <span className= "eye"> 👁️ </span> 
+			</h1> 
 	
-		<p className= "text-lg text-gray-700 mb-10">
+		</div>
+		<div className="rounded-2xl shadow-lg p-8 mb-10" style={{backgroundColor: colours.pageBg}}>
+			<p className= "text-lg text-gray-700 mb-10 p-4">
 			Track how your code quality evolves over time !
-		</p>
-
-		<TrendGraph />
+			</p>
+			<TrendGraph />
+		</div>
 	</div>
 
 );

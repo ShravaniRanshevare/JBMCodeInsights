@@ -339,7 +339,7 @@ async def get_graph(db:db_dependency, user: user_dependency):
     if not user:
         raise HTTPException(status_code=401,detail="Need to authenticate before you can proceed")
     today = date.today()
-    projects = (db.query(Project).filter(Project.user_id==user["id"].all()))
+    projects = (db.query(Project).filter(Project.user_id==user["id"]).all())
     project_ids = [ p.id for p in projects]
     
     analyses = db.query(Analysis).filter(Analysis.proj_id.in_(project_ids)).order_by(Analysis.id.desc()).limit(10).all()

@@ -1,10 +1,10 @@
 
 import './App.css'
-import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import Landing from "./pages/landing";
-import Login from "./pages/Login";
-import SignIn from "./pages/SignIn";
+import Navbar from "./components/Navbar.jsx";
+import Home from "./pages/Home.jsx";
+import Landing from "./pages/landing.jsx";
+import Login from "./pages/Login.jsx";
+import SignIn from "./pages/SignIn.jsx";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -14,9 +14,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 function DashboardLayout ({children}) {
   return (
-    <div className= "flex">
+    <div className= "flex min-h-screen">
       <Navbar />
-      <main className="flex-1 p-8">
+      <main className="flex-1 px-12 py-8">
         {children}
       </main>
     </div>
@@ -37,38 +37,10 @@ function App() {
               <DashboardLayout>
                 <Home />
               </DashboardLayout>
-            </ProtectedRoute>/>
+            </ProtectedRoute>
           } 
         />
 
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <Profile />
-              </DashboardLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/projects" element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <Projects />
-              </DashboardLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/create-project" element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <CreateProject />
-              </DashboardLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/analysis" element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <Analysis />
-              </DashboardLayout>
-            </ProtectedRoute>
-          } />
         </Routes>
     
   );
