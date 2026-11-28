@@ -19,7 +19,7 @@ function Landing(){
 	}
 
 	return (
-	<div className="min-h-screen flex justify-center align-center text-align-center p-10" style = {{ backgroundColor: colours.pageBG}}>
+	<div className="min-h-screen flex justify-center align-center items-center text-align-center p-10" style = {{ backgroundColor: colours.pageBG}}>
 		{/* Floating Eyes */}
 		<div className= "eye eye1"> 👁️</div>
 		<div className= "eye eye2"> 👁️</div>
@@ -30,14 +30,16 @@ function Landing(){
 	<div className="content">
 		<h1 className="mt-20 text-center text-5xl font-bold mb-10 font-serif" style={{ color: colours.text}}>
 			Welcome to JBMCodeInsights </h1>
-			<p className="text-center subtitle" style = {{color: colours.text, fontFamily: "Georgia,serif"}}> Where We Have All Insights</p>
+			<p className="text-center subtitle" style = {{color: colours.text, fontWeight: "semi-bold", fontFamily: "Georgia,serif"}}> Where We Have All Insights</p>
 
 		<div className="mt-10 button-group">
-			<NavLink to = "/login" className="text-center w-40 h-20 p-3 rounded-lg text-black hover:text-white" style={{ backgroundColor: colours.text}}>
+			<NavLink to = "/login" className="w-[220px] h-[110px] rounded-2xl flex justify-center items-center text-black hover:text-white" 
+				style={{ backgroundColor: colours.text, fontFamily: "Georgia,serif",opacity:0.7}}>
 				Login
 			</NavLink>
 
-			<NavLink to = "/signin" className="text-center w-40 h-20 p-3 rounded-lg text-black hover:text-white" style={{ backgroundColor: colours.text}}>
+			<NavLink to = "/signin" className="w-[220px] h-[110px] rounded-2xl flex justify-center items-center text-black hover:text-white" 
+				style={{ backgroundColor: colours.text, fontFamily: "Georgia,serif",opacity:0.7}}>
 				Sign In
 			</NavLink>
 		</div>

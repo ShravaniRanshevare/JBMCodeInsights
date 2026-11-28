@@ -17,9 +17,7 @@
 .eye{
 	position: absolute;
 	font-size: 4rem;
-	opacity: 0.15;
-	animation: float 7s ease-in-out infinite,
-	blink 12s infinite;
+	animation: floatBlink 8s ease-in-out infinite;
 }
 
 .eye1{
@@ -61,33 +59,24 @@
 }
 
 
-@keyframes float {
+@keyframes floatBlink{
 	0% {
-	transform: translateY(0px);
+	transform: 
+	translateY(0px)
+	scaleY(0.50);
+
 	}
 
 	50%{
-	transform: translateY( -15px);
+	transform: 
+	translateY( -15px)
+	scaleY(1);
 	}
 	100%{
-	transform: translateY(0px);
+	transform: 
+	translateY(0px)
+	scaleY(0.05);
 	}
-}
-
-
-
-
-@keyframes blink {
-
-    0%,
-    96%,
-    100% {
-        scale: 1;
-    }
-
-    98% {
-        transform: translateY(0.1);
-    }
 }
 
 

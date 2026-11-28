@@ -16,9 +16,9 @@ function Navbar() {
 				JBMCodeInsights
 			</h1>
 				<div className="flex flex-col justify-between align-items items-center">
-				<NavLink to="/profile" className = "text-[#6E3000] text-center bg-[#FFF8D6] w-20 h-20 p-3 rounded-full 
+				<NavLink to="/profile" className = "text-[#6E3000] flex justify-center items-center bg-[#FFF8D6] w-20 h-20 p-3 rounded-full 
 					shadow hover:text-white" style={{opacity:0.9, fontFamily: "Georgia,Serif"}}>
-					View Profile
+					Profile
 				</NavLink>
 			</div>
 			

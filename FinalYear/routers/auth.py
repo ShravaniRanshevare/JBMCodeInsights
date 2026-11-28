@@ -24,9 +24,6 @@ class User_Req(BaseModel):
     user_email: str = Field(min_length=3)
     password: str = Field(min_length=3,max_length=30)
     
-class user_login(BaseModel):
-    user_email:str 
-    password: str
     
 class Token(BaseModel):
     access_token: str
@@ -71,6 +68,7 @@ def get_current_user(token:Annotated[dict,Depends(oauth2_bearer)]):
 
 @router.post("/create_account",status_code=status.HTTP_201_CREATED)
 async def sign_in(user_req:User_Req,db:db_dependency):
+    print(user_req)
     hashed_password = bcrypt_context.hash(user_req.password)
     user_model = Users(
         username = user_req.username,

@@ -15,40 +15,24 @@ const [email,setEmail]= useState("");
 const [password,setPassword]= useState("");
 const navigate = useNavigate();
 
+
 const handleSignin= async() =>{
 	try{
-	const formData = new URLSearchParams();
-	formData.append("username",username);
-	formData.append("email",email);
-	formData.append("password",password);
+	const request_body = {
+		username: username,
+		user_email:email,
+		password:password
+	};
 	const res_sign = await axios.post(
 	"http://127.0.0.1:8000/auth/create_account",
-	formData,
+	request_body,
 	{
 	headers: {
-		"Content-Type": "application/x-www-form-urlencoded"
+		"Content-Type": "application/json"
 	}
 	}
 	);
-
-	const loginData = new URLSearchParams();
-	loginData.append("email",email);
-	loginData.append("password", password);
-	const res_login = await axios.post(
-	"http://127.0.0.1:8000/auth/login",
-	loginData,
-	{
-	headers: {
-		"Content-Type": "application/x-www-form-urlencoded"
-	}
-	}
-	);
-
-	const token = res_login.data.token;
-	if (token){
-		localStorage.setItem("token",token);
-	}
-	navigate("/Home");
+	navigate("/login");
 	} catch(err){
 	alert("Sign In Failed, try again later !");
 	console.log(err);
@@ -75,7 +59,7 @@ return (
 				onChange={ (e)=> setEmail(e.target.value)} className= "w-85 h-30 text-xl rounded-2xl text-black p-6" style={{ backgroundColor: colours.pageBg, opacity: 0.8}} />
 			<input type="password" name="password" value={password} placeholder="Enter Password"
 				onChange={ (e)=> setPassword(e.target.value)} className= "w-85 h-30 text-xl rounded-2xl text-black p-6" style={{ backgroundColor: colours.pageBg, opacity: 0.8}} />
-			<button type="submit" onClick={handleSignin} className="rounded-full h-10 px-10 py-3 font-semibold text-lg self-center w-40 transition-all hover:scale-105 " style={{ backgroundColor: colours.pageBg, opacity: 0.8}}> Sign In </button>
+			<button type="button" onClick={handleSignin} className="rounded-full h-10 px-10 py-3 font-semibold text-lg self-center w-40 transition-all hover:scale-105 " style={{ backgroundColor: colours.pageBg, opacity: 0.8}}> Sign In </button>
 		</form>
 		<NavLink to="/login" className="text-sml text-black p-5 hover:text-gray-700" style={{opacity: 0.5, fontSize: "1rem", fontFamily: "Georgia,serif"}}>Already have an account? Login </NavLink>
 	</div>
