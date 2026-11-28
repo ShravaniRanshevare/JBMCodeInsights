@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import {useState} from "react";
 import "../css/Navbar.css";
 
 const colours = {
@@ -9,6 +10,16 @@ const colours = {
 };
 
 function Navbar() {
+
+	const navigate = useNavigate();
+	const [showLogoutModal,setShowLogoutModal]= useState(false);
+
+
+	const handleLogout= ()=>{
+		localStorage.removeItem("token");
+		navigate("/login")
+
+	}
 	return (
 		<aside className= "flex flex-col gap-15 w-50 min-h-screen p-6 shadow-lg" 
 			style = {{ backgroundColor: colours.sidebarBg}}>
@@ -47,8 +58,55 @@ function Navbar() {
 							Home
 						</NavLink>
 					</li>
+
+					<li>
+						<p onClick={()=> setShowLogoutModal(true)} className="nav-link cursor-pointer">
+							Logout
+						</p>
+					</li>
 					</ul>
 			</nav>	
+			{
+
+				showLogoutModal && (
+					<div className="
+            					fixed
+            					inset-0
+					            bg-black/40
+					            flex
+					            justify-center
+					            items-center
+					            z-50
+					        ">
+
+					            <div className="
+					                bg-[#FAF5E9]
+					                rounded-3xl
+					                p-8
+					                w-[400px]
+					                h-[100px]
+					                shadow-xl
+					                flex flex-col gap-5
+					            ">
+						<h2 className="text-center text-[#6E3000] text-xl font-semibold font-serif mb-10">
+							Log Out?
+						</h2>
+						<div className="flex justify-center gap-5 p-10">
+							<button className="w-25 text-white font-serif font-semibold rounded-lg" style={{backgroundColor: colours.sidebarBg}}
+								onClick={()=> setShowLogoutModal(false)}>
+								Cancel
+							</button>
+							<button className="w-25 bg-[#FF0000] text-white font-serif font-semibold rounded-lg" 
+								onClick={handleLogout}>
+								Logout
+							</button>
+						</div>
+					</div>
+				</div>
+
+
+				)
+			}
 			
 		</aside>
 
